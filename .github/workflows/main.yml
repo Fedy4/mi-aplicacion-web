@@ -1,0 +1,43 @@
+name: CI/CD Pipeline
+
+# Ejecutar en los eventos push y pull request en la rama main
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Clonar el repositorio
+    - name: Clonar el repositorio
+      uses: actions/checkout@v2
+
+    # Instalar Node.js
+    - name: Configurar Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16'
+
+    # Instalar dependencias
+    - name: Instalar dependencias
+      run: npm install
+
+    # Ejecutar pruebas
+    - name: Ejecutar pruebas
+      run: npm test
+
+    # Escaneo de vulnerabilidades
+    - name: Escanear vulnerabilidades
+      run: npm audit
+
+    # Construcción de la aplicación
+    - name: Construir la aplicación
+      run: npm run build
+
+    # Desplegar (en entorno local, este paso se puede personalizar para un servidor real)
+    - name: Desplegar la aplicación (solo pruebas)
+      run: echo "Despliegue en entorno de pruebas"
